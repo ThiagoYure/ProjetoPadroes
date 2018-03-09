@@ -5,10 +5,13 @@
  */
 package com.mycompany.salon.controle;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author ThigoYure
  */
 public interface Command {
-    void execute();
+    void execute(HttpServletRequest req, HttpServletResponse res);
 }
