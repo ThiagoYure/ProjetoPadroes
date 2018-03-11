@@ -12,6 +12,8 @@ import java.util.Objects;
  * @author ThigoYure
  */
 public class Avaliacao {
+    
+    private int id;
     private Atendente atendente;
     private int tempoAtendimento;
     private int qualidadeAtendimento;
@@ -21,12 +23,21 @@ public class Avaliacao {
     public Avaliacao() {
     }
 
-    public Avaliacao(Atendente atendente, int tempoAtendimento, int qualidadeAtendimento, int qualidadeAmbiente, int qualidadeServico) {
+    public Avaliacao(int id, Atendente atendente, int tempoAtendimento, int qualidadeAtendimento, int qualidadeAmbiente, int qualidadeServico) {
+        this.id = id;
         this.atendente = atendente;
         this.tempoAtendimento = tempoAtendimento;
         this.qualidadeAtendimento = qualidadeAtendimento;
         this.qualidadeAmbiente = qualidadeAmbiente;
         this.qualidadeServico = qualidadeServico;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Atendente getAtendente() {
@@ -71,7 +82,8 @@ public class Avaliacao {
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
+        hash = 29 * hash + this.id;
         hash = 29 * hash + Objects.hashCode(this.atendente);
         hash = 29 * hash + this.tempoAtendimento;
         hash = 29 * hash + this.qualidadeAtendimento;
@@ -92,6 +104,9 @@ public class Avaliacao {
             return false;
         }
         final Avaliacao other = (Avaliacao) obj;
+        if (this.id != other.id) {
+            return false;
+        }
         if (this.tempoAtendimento != other.tempoAtendimento) {
             return false;
         }
@@ -112,8 +127,8 @@ public class Avaliacao {
 
     @Override
     public String toString() {
-        return "Avaliacao{" + "atendente=" + atendente + ", tempoAtendimento=" + tempoAtendimento + ", qualidadeAtendimento=" + qualidadeAtendimento + ", qualidadeAmbiente=" + qualidadeAmbiente + ", qualidadeServico=" + qualidadeServico + '}';
-    }
+        return "Avaliacao{" + "id=" + id + ", atendente=" + atendente + ", tempoAtendimento=" + tempoAtendimento + ", qualidadeAtendimento=" + qualidadeAtendimento + ", qualidadeAmbiente=" + qualidadeAmbiente + ", qualidadeServico=" + qualidadeServico + '}';
+    }  
     
     
 }

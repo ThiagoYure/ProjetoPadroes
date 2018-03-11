@@ -5,7 +5,9 @@
  */
 package com.mycompany.salon.controle;
 
+import com.mycompany.salon.persistencia.AtendimentoDao;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +24,7 @@ public class AgendarAtendimentoController implements Command {
     public void execute(HttpServletRequest req, HttpServletResponse res) {
         String atendente = req.getParameter("atendente");
         String servico = req.getParameter("servico");
-        LocalTime horario = LocalTime.parse(req.getParameter("horario"));
+        String horario = req.getParameter("horario");
         String cliente = req.getParameter("cliente");
         AtendimentoDao dao = new AtendimentoDao();
         if (atendente.equals("") || servico.equals("") || cliente.equals("") || horario.equals(req.getParameter("horario"))) {
@@ -31,20 +33,24 @@ public class AgendarAtendimentoController implements Command {
             } catch (IOException ex) {
                 Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (dao.readAtendimento(servico, atendente, horario).equals(null)) {
-            if(dao.create(atendente,servico,horario,cliente)){
-                try {
-                    res.sendRedirect(req.getContextPath());
-                } catch (IOException ex) {
-                    Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }else{
-                try {
-                    res.sendError(2, "Falha ao criar.");
-                } catch (IOException ex) {
-                    Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
+        } else try {
+            if (dao.readAtendimento(servico, atendente, horario).equals(null)) {
+                if(dao.create(atendente,servico,horario,cliente)){
+                    try {
+                        res.sendRedirect(req.getContextPath());
+                    } catch (IOException ex) {
+                        Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    try {
+                        res.sendError(2, "Falha ao criar.");
+                    } catch (IOException ex) {
+                        Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

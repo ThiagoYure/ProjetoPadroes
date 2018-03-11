@@ -18,7 +18,6 @@ public class Atendimento {
     private Usuario cliente;
     private int id;
     private LocalTime horaInicio;
-    private LocalTime horaFim;
     private boolean confirmado;
 
     public Atendimento() {
@@ -31,7 +30,6 @@ public class Atendimento {
         this.id = id;
         this.horaInicio = horaInicio;
         this.confirmado = confirmado;
-        this.horaFim = this.horaInicio.plusMinutes(servico.getTempoMedio());
     }
 
     public Servico getServico() {
@@ -74,14 +72,6 @@ public class Atendimento {
         this.horaInicio = horaInicio;
     }
 
-    public LocalTime getHoraFim() {
-        return horaFim;
-    }
-
-    public void setHoraFim(LocalTime horaFim) {
-        this.horaFim = horaFim;
-    }
-
     public boolean isConfirmado() {
         return confirmado;
     }
@@ -93,13 +83,12 @@ public class Atendimento {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.servico);
-        hash = 89 * hash + Objects.hashCode(this.atendente);
-        hash = 89 * hash + Objects.hashCode(this.cliente);
-        hash = 89 * hash + this.id;
-        hash = 89 * hash + Objects.hashCode(this.horaInicio);
-        hash = 89 * hash + Objects.hashCode(this.horaFim);
-        hash = 89 * hash + (this.confirmado ? 1 : 0);
+        hash = 11 * hash + Objects.hashCode(this.servico);
+        hash = 11 * hash + Objects.hashCode(this.atendente);
+        hash = 11 * hash + Objects.hashCode(this.cliente);
+        hash = 11 * hash + this.id;
+        hash = 11 * hash + Objects.hashCode(this.horaInicio);
+        hash = 11 * hash + (this.confirmado ? 1 : 0);
         return hash;
     }
 
@@ -133,17 +122,15 @@ public class Atendimento {
         if (!Objects.equals(this.horaInicio, other.horaInicio)) {
             return false;
         }
-        if (!Objects.equals(this.horaFim, other.horaFim)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Atendimento{" + "servico=" + servico + ", atendente=" + atendente + ", cliente=" + cliente + ", id=" + id + ", horaInicio=" + horaInicio + ", horaFim=" + horaFim + ", confirmado=" + confirmado + '}';
+        return "Atendimento{" + "servico=" + servico + ", atendente=" + atendente + ", cliente=" + cliente + ", id=" + id + ", horaInicio=" + horaInicio + ", confirmado=" + confirmado + '}';
     }
-    
+
+        
     
     
 }
