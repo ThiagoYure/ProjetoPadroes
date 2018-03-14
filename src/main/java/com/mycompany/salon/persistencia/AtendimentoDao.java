@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +27,13 @@ public class AtendimentoDao {
     public AtendimentoDao() {
     }
 
-    public Atendimento readAtendimento(String servico, String atendente, String horario) throws SQLException, ClassNotFoundException {
+    public Atendimento readAtendimento(String servico, String atendente, String horario, String data) throws SQLException, ClassNotFoundException {
         try (Connection con = ConFactory.getConnection()) {
-            PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE servico=? and atendente=? and horario=?");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE servico=? and atendente=? and horario=? and data=?");
             st.setString(1, servico);
             st.setString(2, atendente);
-            st.setString(0, horario);
+            st.setString(3, horario);
+            st.setString(4, data);
             ResultSet r = st.executeQuery();
             if (r.next()) {
                 Atendimento atendimento = new Atendimento();
@@ -47,6 +49,7 @@ public class AtendimentoDao {
                 atendimento.setId(r.getInt("id"));
                 atendimento.setHoraInicio(LocalTime.parse(r.getString("horarioinicio")));
                 atendimento.setConfirmado(r.getBoolean("confirmado"));
+                atendimento.setData(LocalDate.parse(r.getString("data")));
                 st.close();
                 con.close();
                 return atendimento;
@@ -55,15 +58,16 @@ public class AtendimentoDao {
         return null;
     }
 
-    public boolean create(String atendente, String servico, String horario, String cliente) {
+    public boolean create(String atendente, String servico, String horario, String cliente, String data) {
         try {
             int retorno;
             try (Connection con = ConFactory.getConnection()) {
-                PreparedStatement st = con.prepareStatement("INSERT INTO atendimento (atendente,servico,cliente,horainicio) VALUES(?,?,?,?)");
+                PreparedStatement st = con.prepareStatement("INSERT INTO atendimento (atendente,servico,cliente,horainicio,data) VALUES(?,?,?,?,?)");
                 st.setString(1, atendente);
                 st.setString(2, servico);
                 st.setString(3, cliente);
                 st.setString(4, horario);
+                st.setString(5, data);
                 retorno = st.executeUpdate();
                 st.close();
             }

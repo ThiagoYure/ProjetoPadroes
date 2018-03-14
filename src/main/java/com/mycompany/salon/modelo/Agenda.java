@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class Agenda {
     private Atendente atendente;
-    private ArrayList<Servico> servicos = new ArrayList<>();
+    private ArrayList<Atendimento> servicos = new ArrayList<>();
 
     public Agenda() {
     }
@@ -31,19 +31,19 @@ public class Agenda {
         this.atendente = atendente;
     }
 
-    public ArrayList<Servico> getServicos() {
+    public ArrayList<Atendimento> getServicos() {
         return servicos;
     }
 
-    public void setServicos(ArrayList<Servico> servicos) {
+    public void setServicos(ArrayList<Atendimento> servicos) {
         this.servicos = servicos;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.atendente);
-        hash = 61 * hash + Objects.hashCode(this.servicos);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.atendente);
+        hash = 59 * hash + Objects.hashCode(this.servicos);
         return hash;
     }
 
@@ -72,6 +72,8 @@ public class Agenda {
     public String toString() {
         return "Agenda{" + "atendente=" + atendente + ", servicos=" + servicos + '}';
     }
+
+    
     
     
 }

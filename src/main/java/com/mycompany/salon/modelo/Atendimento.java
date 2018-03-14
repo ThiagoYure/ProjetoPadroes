@@ -5,6 +5,7 @@
  */
 package com.mycompany.salon.modelo;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -17,18 +18,22 @@ public class Atendimento {
     private Atendente atendente;
     private Usuario cliente;
     private int id;
+    private LocalDate data;
     private LocalTime horaInicio;
+    private LocalTime horaFim;
     private boolean confirmado;
 
     public Atendimento() {
     }
 
-    public Atendimento(Servico servico, Atendente atendente, Usuario cliente, int id, LocalTime horaInicio, boolean confirmado) {
+    public Atendimento(Servico servico, Atendente atendente, Usuario cliente, int id, LocalDate data, LocalTime horaInicio, boolean confirmado) {
         this.servico = servico;
         this.atendente = atendente;
         this.cliente = cliente;
         this.id = id;
+        this.data = data;
         this.horaInicio = horaInicio;
+        this.horaFim = horaInicio.plusMinutes(servico.getTempoMedio());
         this.confirmado = confirmado;
     }
 
@@ -64,6 +69,14 @@ public class Atendimento {
         this.id = id;
     }
 
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
     public LocalTime getHoraInicio() {
         return horaInicio;
     }
@@ -80,15 +93,25 @@ public class Atendimento {
         this.confirmado = confirmado;
     }
 
+    public LocalTime getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(LocalTime horaFim) {
+        this.horaFim = horaFim;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 11 * hash + Objects.hashCode(this.servico);
-        hash = 11 * hash + Objects.hashCode(this.atendente);
-        hash = 11 * hash + Objects.hashCode(this.cliente);
-        hash = 11 * hash + this.id;
-        hash = 11 * hash + Objects.hashCode(this.horaInicio);
-        hash = 11 * hash + (this.confirmado ? 1 : 0);
+        hash = 61 * hash + Objects.hashCode(this.servico);
+        hash = 61 * hash + Objects.hashCode(this.atendente);
+        hash = 61 * hash + Objects.hashCode(this.cliente);
+        hash = 61 * hash + this.id;
+        hash = 61 * hash + Objects.hashCode(this.data);
+        hash = 61 * hash + Objects.hashCode(this.horaInicio);
+        hash = 61 * hash + Objects.hashCode(this.horaFim);
+        hash = 61 * hash + (this.confirmado ? 1 : 0);
         return hash;
     }
 
@@ -119,7 +142,13 @@ public class Atendimento {
         if (!Objects.equals(this.cliente, other.cliente)) {
             return false;
         }
+        if (!Objects.equals(this.data, other.data)) {
+            return false;
+        }
         if (!Objects.equals(this.horaInicio, other.horaInicio)) {
+            return false;
+        }
+        if (!Objects.equals(this.horaFim, other.horaFim)) {
             return false;
         }
         return true;
@@ -127,10 +156,10 @@ public class Atendimento {
 
     @Override
     public String toString() {
-        return "Atendimento{" + "servico=" + servico + ", atendente=" + atendente + ", cliente=" + cliente + ", id=" + id + ", horaInicio=" + horaInicio + ", confirmado=" + confirmado + '}';
+        return "Atendimento{" + "servico=" + servico + ", atendente=" + atendente + ", cliente=" + cliente + ", id=" + id + ", data=" + data + ", horaInicio=" + horaInicio + ", horaFim=" + horaFim + ", confirmado=" + confirmado + '}';
     }
+    
+    
 
-        
-    
-    
+   
 }

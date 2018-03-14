@@ -8,7 +8,6 @@ package com.mycompany.salon.controle;
 import com.mycompany.salon.persistencia.AtendimentoDao;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +25,7 @@ public class AgendarAtendimentoController implements Command {
         String servico = req.getParameter("servico");
         String horario = req.getParameter("horario");
         String cliente = req.getParameter("cliente");
+        String data = req.getParameter("data");
         AtendimentoDao dao = new AtendimentoDao();
         if (atendente.equals("") || servico.equals("") || cliente.equals("") || horario.equals(req.getParameter("horario"))) {
             try {
@@ -34,8 +34,8 @@ public class AgendarAtendimentoController implements Command {
                 Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else try {
-            if (dao.readAtendimento(servico, atendente, horario).equals(null)) {
-                if(dao.create(atendente,servico,horario,cliente)){
+            if (dao.readAtendimento(servico, atendente, horario, data).equals(null)) {
+                if(dao.create(atendente,servico,horario,cliente,data)){
                     try {
                         res.sendRedirect(req.getContextPath());
                     } catch (IOException ex) {
@@ -50,6 +50,8 @@ public class AgendarAtendimentoController implements Command {
                 }
             }
         } catch (SQLException ex) {
+            Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
