@@ -5,12 +5,11 @@
  */
 package com.mycompany.salon.controle;
 
+import com.mycompany.salon.persistencia.AtendenteDao;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
@@ -27,11 +26,7 @@ public class BuscaAtendentes extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException {
         AtendenteDao atendDao = new AtendenteDao();
-        try {
-            getJspContext().setAttribute("Atendentes", atendDao.readAll());
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(BuscaAtendentes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        getJspContext().setAttribute("Atendentes", atendDao.readAll());
     }
     
 }

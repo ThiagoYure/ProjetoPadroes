@@ -29,11 +29,7 @@ public class BuscaPorServico extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException {
         AtendimentoDao atendDao = new AtendimentoDao();
-        try {
-            getJspContext().setAttribute("AtendimentoPorServico", atendDao.readByServico(servico));
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(BuscaPorServico.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        getJspContext().setAttribute("AtendimentoPorServico", atendDao.readByServico(servico));
     }
 
     public void setServico(String servico) {

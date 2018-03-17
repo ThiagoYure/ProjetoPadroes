@@ -25,7 +25,16 @@ public class Atendimento {
 
     public Atendimento() {
     }
-
+    public Atendimento(Atendimento atendimento){
+        this.servico = atendimento.getServico();
+        this.atendente = atendimento.getAtendente();
+        this.cliente = atendimento.getCliente();
+        this.id = atendimento.getId();
+        this.data = atendimento.getData();
+        this.horaInicio = atendimento.getHoraInicio();
+        this.horaFim = atendimento.getHoraFim();
+        this.confirmado = atendimento.isConfirmado();
+    }
     public Atendimento(Servico servico, Atendente atendente, Usuario cliente, int id, LocalDate data, LocalTime horaInicio, boolean confirmado) {
         this.servico = servico;
         this.atendente = atendente;
@@ -157,6 +166,10 @@ public class Atendimento {
     @Override
     public String toString() {
         return "Atendimento{" + "servico=" + servico + ", atendente=" + atendente + ", cliente=" + cliente + ", id=" + id + ", data=" + data + ", horaInicio=" + horaInicio + ", horaFim=" + horaFim + ", confirmado=" + confirmado + '}';
+    }
+    
+    public Atendimento clone(){
+        return (new Atendimento(this));
     }
     
     

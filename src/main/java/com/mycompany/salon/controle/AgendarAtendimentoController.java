@@ -5,6 +5,7 @@
  */
 package com.mycompany.salon.controle;
 
+import com.mycompany.salon.modelo.Atendimento;
 import com.mycompany.salon.persistencia.AtendimentoDao;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,39 +22,7 @@ public class AgendarAtendimentoController implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) {
-        String atendente = req.getParameter("atendente");
-        String servico = req.getParameter("servico");
-        String horario = req.getParameter("horario");
-        String cliente = req.getParameter("cliente");
-        String data = req.getParameter("data");
-        AtendimentoDao dao = new AtendimentoDao();
-        if (atendente.equals("") || servico.equals("") || cliente.equals("") || horario.equals(req.getParameter("horario"))) {
-            try {
-                res.sendError(1, "Campos vazios!");
-            } catch (IOException ex) {
-                Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else try {
-            if (dao.readAtendimento(servico, atendente, horario, data).equals(null)) {
-                if(dao.create(atendente,servico,horario,cliente,data)){
-                    try {
-                        res.sendRedirect(req.getContextPath());
-                    } catch (IOException ex) {
-                        Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    try {
-                        res.sendError(2, "Falha ao criar.");
-                    } catch (IOException ex) {
-                        Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
 }

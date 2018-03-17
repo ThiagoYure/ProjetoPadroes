@@ -19,43 +19,58 @@
     </head>
     <body>
         <div class="container">
-            <form action="agendamentoDeHorarioAdmin.jsp">
-                <div class="input-field col s12">
-                    <select name="servico">
-                        <option value="" disabled selected>Choose your option</option>
-                        <MyTags:BuscaServicos/>
-                        <c:choose>
-                            <c:when test="${empty Servicos}">
-                                <h2>Não existem serviços cadastrados.</h2>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="servico" items="${Servicos}">
-                                    <option value="${servico.nome}">${servico.nome}</option>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </select>
-                    <label>Busca por serviço</label>
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s6"><a class="active" href="#BuscaServico">Busca Por Serviço</a></li>
+                        <li class="tab col s6"><a href="#BuscaAtendente">Busca Por Atendente</a></li></li>
+                    </ul>
                 </div>
-                <div class="input-field col s12">
-                    <select name="servico">
-                        <option value="" disabled selected>Choose your option</option>
-                        <MyTags:BuscaAtendentes/>
-                        <c:choose>
-                            <c:when test="${empty Atendentes}">
-                                <h2>Não existem Atendentes cadastrados.</h2>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="atendente" items="${Atendentes}">
-                                    <option value="${atendente.nome}">${atendente.nome}</option>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </select>
-                    <label>Busca por atendente</label>
+                <div id="BuscaServico" class="col s12">
+                    <form action="agendamentoDeHorarioAdmin.jsp">
+                        <div class="input-field col s12">
+                            <select name="servico">
+                                <option value="" disabled selected>Choose your option</option>
+                                <MyTags:BuscaServicos/>
+                                <c:choose>
+                                    <c:when test="${empty Servicos}">
+                                        <h2>Não existem serviços cadastrados.</h2>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach var="servico" items="${Servicos}">
+                                            <option value="${servico.nome}">${servico.nome}</option>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+                            </select>
+                            <label>Busca por serviço</label>
+                        </div>
+                        <button class="btn-block" type="submit">Pesquisar</button>
+                    </form>
                 </div>
-                <button class="btn-block" type="submit">Pesquisar</button>
-            </form>
+                <div id="BuscaAtendente" class="col s12">
+                    <form action="agendamentoDeHorarioAdmin.jsp">
+                        <div class="input-field col s12">
+                            <select name="atendente">
+                                <option value="" disabled selected>Choose your option</option>
+                                <MyTags:BuscaAtendentes/>
+                                <c:choose>
+                                    <c:when test="${empty Atendentes}">
+                                        <h2>Não existem Atendentes cadastrados.</h2>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach var="atendente" items="${Atendentes}">
+                                            <option value="${atendente.nome}">${atendente.nome}</option>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+                            </select>
+                            <label>Busca por atendente</label>
+                        </div>
+                        <button class="btn-block" type="submit">Pesquisar</button>
+                    </form>
+                </div>
+            </div>
             <MyTags:BuscaPorServico servico="${param.servico}"/>
             <c:choose>
                 <c:when test="${not empty AtendimentoPorServico}">
