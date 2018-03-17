@@ -6,9 +6,6 @@
 package com.mycompany.salon.controle;
 
 import com.mycompany.salon.persistencia.AtendimentoDao;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 

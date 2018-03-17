@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +39,28 @@ public class UsuarioDao {
             st.close();
             con.close();
             return null;
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public Object readAll() {
+        try (Connection con = ConFactory.getConnection()) {
+            PreparedStatement st = con.prepareStatement("SELECT * FROM usuario");
+            ResultSet r = st.executeQuery();
+            ArrayList<Usuario> retorno = new ArrayList<>();
+            while (r.next()) {
+                Usuario user = new Usuario();
+                user.setEmail(r.getString("email"));
+                user.setFotoPerfil(r.getString("fotoPerfil"));
+                user.setNome(r.getString("nome"));
+                user.setTelefone(r.getString("telefone"));
+                retorno.add(user);
+            }
+            st.close();
+            con.close();
+            return retorno;
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
         }

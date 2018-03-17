@@ -1,0 +1,5 @@
+com\mycompany\salon\modelo\Usuario.class
+com\mycompany\salon\controle\FrontController.class
+com\mycompany\salon\modelo\Servico.class
+com\mycompany\salon\controle\Command.class
+com\mycompany\salon\persistencia\ConFactory.class
