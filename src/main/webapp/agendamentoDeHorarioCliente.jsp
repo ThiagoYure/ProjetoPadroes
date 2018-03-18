@@ -1,8 +1,9 @@
 <%-- 
-    Document   : agendamentoDeHorarioAdmin
-    Created on : 12/03/2018, 09:35:43
+    Document   : agendamentoDeHorarioCliente
+    Created on : 17/03/2018, 22:13:27
     Author     : ThigoYure
 --%>
+
 <%@taglib prefix="MyTags" uri="/tlds/MyTags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -85,21 +86,7 @@
                             </div>
                         </c:forEach>
                         <div class="input-field col s12">
-                            <select name="cliente">
-                                <option value="" disabled selected>Choose your option</option>
-                                <MyTags:BuscaUsuarios/>
-                                <c:choose>
-                                    <c:when test="${empty Usuarios}">
-                                        <h2>Não existem usuários cadastrados.</h2>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:forEach var="usuario" items="${Usuarios}">
-                                            <option value="${usuario.email}">${usuario.nome}</option>
-                                        </c:forEach>
-                                    </c:otherwise>
-                                </c:choose>
-                            </select>
-                            <label>Busca por serviço</label>
+                            <input type="hidden" name="cliente" value="${user.email}">
                         </div>
                         <input id="data" type="text" name="data" class="datepicker">
                         <label for="data">Data do Atendimento</label>
@@ -135,7 +122,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </select>
-                            <label>Cliente</label>
+                            <label>Busca por serviço</label>
                         </div>
                         <input id="data" type="text" name="data" class="datepicker">
                         <label for="data">Data do Atendimento</label>

@@ -57,4 +57,26 @@
     <tag-class>com.mycompany.salon.controle.BuscaUsuarios</tag-class>
     <body-content>scriptless</body-content>
   </tag>
+  <tag>
+    <name>BuscaUsuarioByGastos</name>
+    <tag-class>com.mycompany.salon.controle.BuscaUsuarioByGastos</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <name>intervalo</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
+  <tag>
+    <name>BuscaUsuarioByFrenquencia</name>
+    <tag-class>com.mycompany.salon.controle.BuscaUsuarioByFrequencia</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <name>intervalo</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
 </taglib>

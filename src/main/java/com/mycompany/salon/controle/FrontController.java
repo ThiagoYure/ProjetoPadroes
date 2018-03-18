@@ -36,7 +36,7 @@ public class FrontController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String controller = request.getParameter("controller");
         try {
-            Command comando = (Command) Class.forName(controller+"Controller").newInstance();
+            Command comando = (Command) Class.forName(controller).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             response.sendError(1, "Tipo de requisição inexistente.");
         }

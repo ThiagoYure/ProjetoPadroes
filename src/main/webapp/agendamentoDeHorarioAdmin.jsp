@@ -74,7 +74,7 @@
             <MyTags:BuscaPorServico servico="${param.servico}"/>
             <c:choose>
                 <c:when test="${not empty AtendimentoPorServico}">
-                    <form action="FrontController" method="POST">
+                    <form action="FrontController?controller=AgendarAtendimentoController" method="POST">
                         <c:forEach var="opcoes" items="${AtendimentoPorServico}">
                             <div class="accent-1">
                                 <input class="with-gap" name="opcao" type="radio" id="${opcoes.id}" value="${opcoes.id}" />
@@ -110,7 +110,7 @@
             <MyTags:BuscaPorAtendente atendente="${param.atendente}"/>
             <c:choose>
                 <c:when test="${not empty AtendimentoPorAtendente}">
-                    <form action="FrontController" method="POST">
+                    <form action="FrontController?controller=AgendarAtendimentoController" method="POST">
                         <c:forEach var="opcoes" items="${AtendimentoPorAtendente}">
                             <div class="accent-1">
                                 <input class="with-gap" name="opcao" type="radio" id="${opcoes.id}" value="${opcoes.id}"/>
@@ -135,7 +135,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </select>
-                            <label>Busca por serviço</label>
+                            <label>Cliente</label>
                         </div>
                         <input id="data" type="text" name="data" class="datepicker">
                         <label for="data">Data do Atendimento</label>
