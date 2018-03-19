@@ -6,7 +6,9 @@
 package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Atendimento;
+import com.mycompany.salon.modelo.Usuario;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +29,7 @@ public class AtendimentoDao {
 
     public ArrayList<Atendimento> readAgendaByAtendente(String atendente) {
         try (Connection con = ConFactory.getConnection()) {
-            PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE atendente = ?");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE atendente = ? and cliente is null");
             ResultSet r = st.executeQuery();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
@@ -191,6 +193,56 @@ public class AtendimentoDao {
             return null;
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public ArrayList<Usuario> readByQuant(String intervalo) {
+        int intervaloInt = Integer.parseInt(intervalo);
+        LocalDate dataMaxima = LocalDate.now().minusMonths(intervaloInt);
+        try (Connection con = ConFactory.getConnection()) {
+            PreparedStatement st = con.prepareStatement("select u.email, u.nome from atendimento at,usuario u where"
+                    + "u.email = at.cliente and (at.data between ? and ?) order by (select sum(s.preco) from atendimento att, servico s where att.cliente = at.cliente and att.servico = s.nome ) asc");
+            st.setDate(1, Date.valueOf(dataMaxima));
+            st.setDate(2, Date.valueOf(LocalDate.now()));
+            ResultSet r = st.executeQuery();
+            ArrayList<Usuario> retorno = new ArrayList<>();
+            while(r.next()){
+                Usuario user = new Usuario();
+                user.setEmail(r.getString("u.email"));
+                user.setNome(r.getString("u.nome"));
+                retorno.add(user);
+            }
+            st.close();
+            con.close();
+            return retorno;
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AtendimentoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public ArrayList<Usuario> readByGastos(String intervalo) {
+        int intervaloInt = Integer.parseInt(intervalo);
+        LocalDate dataMaxima = LocalDate.now().minusMonths(intervaloInt);
+        try (Connection con = ConFactory.getConnection()) {
+            PreparedStatement st = con.prepareStatement("select u.email, u.nome from atendimento at,usuario u where"
+                    + "u.email = at.cliente and (at.data between ? and ?) order by (select count(cliente) from atendimento att where att.cliente = at.cliente ) asc");
+            st.setDate(1, Date.valueOf(dataMaxima));
+            st.setDate(2, Date.valueOf(LocalDate.now()));
+            ResultSet r = st.executeQuery();
+            ArrayList<Usuario> retorno = new ArrayList<>();
+            while(r.next()){
+                Usuario user = new Usuario();
+                user.setEmail(r.getString("u.email"));
+                user.setNome(r.getString("u.nome"));
+                retorno.add(user);
+            }
+            st.close();
+            con.close();
+            return retorno;
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AtendimentoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

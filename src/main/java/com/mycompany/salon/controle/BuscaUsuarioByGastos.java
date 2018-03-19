@@ -6,9 +6,7 @@
 package com.mycompany.salon.controle;
 
 import com.mycompany.salon.persistencia.AtendimentoDao;
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
