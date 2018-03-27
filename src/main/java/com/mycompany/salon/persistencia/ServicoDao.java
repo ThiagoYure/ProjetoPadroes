@@ -6,6 +6,7 @@
 package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Servico;
+import com.mycompany.salon.modelo.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,10 +18,25 @@ import java.util.logging.Logger;
 /**
  *
  * @author ThigoYure
+ * @author AlexaLins
  */
 public class ServicoDao {
 
     public ServicoDao() {
+    }
+
+    public Servico cadastroServico(Servico servico) throws ClassNotFoundException {
+        try (Connection con = ConFactory.getConnection()) {
+            String sql = "INSERT INTO servico (nome, tempoMedio, preco) VALUES (?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, servico.getNome());
+            stmt.setInt(2, servico.getTempoMedio());
+            stmt.setFloat(3, servico.getPreco());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public ArrayList<Servico> readAll() {
@@ -50,11 +66,11 @@ public class ServicoDao {
             st.setString(1, nome);
             ResultSet r = st.executeQuery();
             if (r.next()) {
-               Servico servico = new Servico();
-               servico.setNome(r.getString("nome"));
-               servico.setPreco(r.getFloat("preco"));
-               servico.setTempoMedio(r.getInt("tempoMedio"));
-               return servico;
+                Servico servico = new Servico();
+                servico.setNome(r.getString("nome"));
+                servico.setPreco(r.getFloat("preco"));
+                servico.setTempoMedio(r.getInt("tempoMedio"));
+                return servico;
             }
             st.close();
             con.close();
@@ -64,5 +80,5 @@ public class ServicoDao {
         }
         return null;
     }
-    
+
 }

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -18,10 +19,25 @@ import java.util.logging.Logger;
 /**
  *
  * @author ThigoYure
+ * @author AlexaLins
  */
 public class AtendenteDao {
 
     public AtendenteDao() {
+    }
+
+    public Atendente cadastroAtendente(Atendente atendente) throws ClassNotFoundException {
+        try (Connection con = ConFactory.getConnection()) {
+            String sql = "INSERT INTO atendente (nome, horaInicio, horaFim) VALUES (?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, atendente.getNome());
+            stmt.setTime(2, Time.valueOf(atendente.getHoraInício()));
+            stmt.setTime(3, Time.valueOf(atendente.getHoraFim()));
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public ArrayList<Atendente> readAll() {
@@ -55,12 +71,12 @@ public class AtendenteDao {
             ResultSet r = st.executeQuery();
             AtendimentoDao atendimentoDao = new AtendimentoDao();
             if (r.next()) {
-               Atendente atendente = new Atendente();
-               atendente.setAgenda(atendimentoDao.readAgendaByAtendente(r.getString("nome")));
-               atendente.setNome(r.getString("nome"));
-               atendente.setHoraFim(LocalTime.parse(r.getString("horafim")));
-               atendente.setHoraInício(LocalTime.parse(r.getString("horainicio")));
-               return atendente;
+                Atendente atendente = new Atendente();
+                atendente.setAgenda(atendimentoDao.readAgendaByAtendente(r.getString("nome")));
+                atendente.setNome(r.getString("nome"));
+                atendente.setHoraFim(LocalTime.parse(r.getString("horafim")));
+                atendente.setHoraInício(LocalTime.parse(r.getString("horainicio")));
+                return atendente;
             }
             st.close();
             con.close();
