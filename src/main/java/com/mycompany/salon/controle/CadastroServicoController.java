@@ -11,7 +11,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  *
  * @author alexalins
  */
-public class CadastroServico extends SimpleTagSupport {
+public class CadastroServicoController extends SimpleTagSupport {
 
     Servico servico = new Servico();
 
@@ -21,7 +21,7 @@ public class CadastroServico extends SimpleTagSupport {
         try {
             getJspContext().setAttribute("ServicoCadastro", servicoDao.cadastroServico(servico));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CadastroServico.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastroServicoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

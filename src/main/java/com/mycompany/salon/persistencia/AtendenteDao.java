@@ -6,6 +6,7 @@
 package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Atendente;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  * @author ThigoYure
  * @author AlexaLins
  */
-public class AtendenteDao {
+public class AtendenteDao implements Serializable{
 
     public AtendenteDao() {
     }
@@ -34,6 +35,8 @@ public class AtendenteDao {
             stmt.setTime(2, Time.valueOf(atendente.getHoraInício()));
             stmt.setTime(3, Time.valueOf(atendente.getHoraFim()));
             stmt.executeUpdate();
+            stmt.close();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,7 +54,6 @@ public class AtendenteDao {
                 atendente.setHoraInício(LocalTime.parse(r.getString("horainicio")));
                 atendente.setHoraFim(LocalTime.parse(r.getString("horafim")));
                 AtendimentoDao atendimentoDao = new AtendimentoDao();
-                atendente.setAgenda(atendimentoDao.readAgendaByAtendente(atendente.getNome()));
                 retorno.add(atendente);
             }
             st.close();
@@ -72,10 +74,11 @@ public class AtendenteDao {
             AtendimentoDao atendimentoDao = new AtendimentoDao();
             if (r.next()) {
                 Atendente atendente = new Atendente();
-                atendente.setAgenda(atendimentoDao.readAgendaByAtendente(r.getString("nome")));
                 atendente.setNome(r.getString("nome"));
                 atendente.setHoraFim(LocalTime.parse(r.getString("horafim")));
                 atendente.setHoraInício(LocalTime.parse(r.getString("horainicio")));
+                st.close();
+                con.close();
                 return atendente;
             }
             st.close();

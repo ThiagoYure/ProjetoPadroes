@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AgendarAtendimentoController implements Command {
 
+    @Inject private AtendimentoDao atendimentoDao;
+    @Inject private UsuarioDao userDao;
+    
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) {
         int idAtendimento = Integer.parseInt(req.getParameter("opcao"));
-        AtendimentoDao atendimentoDao = new AtendimentoDao();
-        UsuarioDao userDao = new UsuarioDao();
-        Atendimento agenda = atendimentoDao.readById(idAtendimento);
-        Atendimento atendimento = agenda.clone();
+        Atendimento atendimento = atendimentoDao.readById(idAtendimento);
         Usuario user = userDao.readByEmail(req.getParameter("cliente"));
         atendimento.setCliente(user);
         atendimento.setConfirmado(false);
@@ -39,9 +40,9 @@ public class AgendarAtendimentoController implements Command {
             } catch (IOException ex) {
                 Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (atendimentoDao.readByDataHorarioAtendente(atendimento.getData(),atendimento.getHoraInicio(),atendimento.getAtendente().getNome()).equals(null)) {
+        } else if (atendimentoDao.readByDataHorarioAtendente(atendimento.getData(),atendimento.getHoraInicio(),atendimento.getAtendente().getNome()) != null) {
             try {
-                res.sendRedirect(req.getContextPath()+"?msg= Ja existe um atendimento marcado para esse horario.");
+                res.sendRedirect(req.getContextPath()+"?msg= Ja existe um atendimento marcado para esse horario e data com esse atendente.");
             } catch (IOException ex) {
                 Logger.getLogger(AgendarAtendimentoController.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -6,9 +6,11 @@
 package com.mycompany.salon.controle;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,18 +30,18 @@ public class FrontController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.lang.ClassNotFoundException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
         String controller = request.getParameter("controller");
-        try {
-            Command comando = (Command) Class.forName(controller).newInstance();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            response.sendError(1, "Tipo de requisição inexistente.");
-        }
+        System.out.println(controller);
+        Command comando;
+        comando = (Command) CDI.current().select(Class.forName(controller)).get();
+        comando.execute(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -54,7 +56,11 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -68,7 +74,11 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrontController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

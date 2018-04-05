@@ -7,6 +7,7 @@ package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Atendimento;
 import com.mycompany.salon.modelo.Usuario;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -17,19 +18,19 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Named;
 
 /**
  *
  * @author ThigoYure
  */
-public class AtendimentoDao {
-
-    public AtendimentoDao() {
-    }
+@Named
+public class AtendimentoDao implements Serializable{
 
     public ArrayList<Atendimento> readAgendaByAtendente(String atendente) {
         try (Connection con = ConFactory.getConnection()) {
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE atendente = ? and cliente is null");
+            st.setString(1, atendente);
             ResultSet r = st.executeQuery();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
@@ -39,7 +40,7 @@ public class AtendimentoDao {
                 atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
                 atendimento.setServico(servicoDao.readByNome(r.getString("servico")));
                 atendimento.setId(r.getInt("id"));
-                atendimento.setHoraInicio(LocalTime.parse(r.getString("horarioinicio")));
+                atendimento.setHoraInicio(LocalTime.parse(r.getString("horainicio")));
                 atendimento.setHoraFim(LocalTime.parse("horafim"));
                 retorno.add(atendimento);
             }
@@ -94,13 +95,10 @@ public class AtendimentoDao {
             while (r.next()) {
                 Atendimento atendimento = new Atendimento();
                 atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
-                atendimento.setCliente(usuarioDao.readByEmail(r.getString("email")));
+                atendimento.setCliente(usuarioDao.readByEmail(r.getString("cliente")));
                 atendimento.setServico(servicoDao.readByNome(r.getString("servico")));
                 atendimento.setConfirmado(r.getBoolean("confirmado"));
-                atendimento.setData(LocalDate.parse(r.getString("data")));
                 atendimento.setId(r.getInt("id"));
-                atendimento.setHoraFim(LocalTime.parse(r.getString("horafim")));
-                atendimento.setHoraInicio(LocalTime.parse(r.getString("horainicio")));
                 retorno.add(atendimento);
             }
             st.close();
@@ -157,6 +155,7 @@ public class AtendimentoDao {
                 st.setBoolean(7, atendimento.isConfirmado());
                 retorno = st.executeUpdate();
                 st.close();
+                con.close();
             }
             return retorno > 0;
         } catch (SQLException | ClassNotFoundException ex) {

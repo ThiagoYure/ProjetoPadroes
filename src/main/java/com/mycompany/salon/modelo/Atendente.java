@@ -6,7 +6,6 @@
 package com.mycompany.salon.modelo;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -17,16 +16,14 @@ public class Atendente {
     private String nome;
     private LocalTime horaInício;
     private LocalTime horaFim;
-    private ArrayList<Atendimento> agenda;
 
     public Atendente() {
     }
 
-    public Atendente(String nome, LocalTime horaInício, LocalTime horaFim, ArrayList<Atendimento> agenda) {
+    public Atendente(String nome, LocalTime horaInício, LocalTime horaFim) {
         this.nome = nome;
         this.horaInício = horaInício;
         this.horaFim = horaFim;
-        this.agenda = agenda;
     }
 
     public String getNome() {
@@ -53,21 +50,12 @@ public class Atendente {
         this.horaFim = horaFim;
     }
 
-    public ArrayList<Atendimento> getAgenda() {
-        return agenda;
-    }
-
-    public void setAgenda(ArrayList<Atendimento> agenda) {
-        this.agenda = agenda;
-    }
-
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 61 * hash + Objects.hashCode(this.nome);
-        hash = 61 * hash + Objects.hashCode(this.horaInício);
-        hash = 61 * hash + Objects.hashCode(this.horaFim);
-        hash = 61 * hash + Objects.hashCode(this.agenda);
+        hash = 53 * hash + Objects.hashCode(this.nome);
+        hash = 53 * hash + Objects.hashCode(this.horaInício);
+        hash = 53 * hash + Objects.hashCode(this.horaFim);
         return hash;
     }
 
@@ -92,15 +80,14 @@ public class Atendente {
         if (!Objects.equals(this.horaFim, other.horaFim)) {
             return false;
         }
-        if (!Objects.equals(this.agenda, other.agenda)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Atendente{" + "nome=" + nome + ", horaIn\u00edcio=" + horaInício + ", horaFim=" + horaFim + ", agenda=" + agenda + '}';
+        return "Atendente{" + "nome=" + nome + ", horaIn\u00edcio=" + horaInício + ", horaFim=" + horaFim + '}';
     }
+
+    
     
 }

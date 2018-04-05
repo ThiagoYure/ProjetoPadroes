@@ -6,7 +6,7 @@
 package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Servico;
-import com.mycompany.salon.modelo.Usuario;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author ThigoYure
  * @author AlexaLins
  */
-public class ServicoDao {
+public class ServicoDao implements Serializable{
 
     public ServicoDao() {
     }
@@ -33,6 +33,8 @@ public class ServicoDao {
             stmt.setInt(2, servico.getTempoMedio());
             stmt.setFloat(3, servico.getPreco());
             stmt.executeUpdate();
+            stmt.close();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(AtendenteDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,6 +72,8 @@ public class ServicoDao {
                 servico.setNome(r.getString("nome"));
                 servico.setPreco(r.getFloat("preco"));
                 servico.setTempoMedio(r.getInt("tempoMedio"));
+                st.close();
+                con.close();
                 return servico;
             }
             st.close();

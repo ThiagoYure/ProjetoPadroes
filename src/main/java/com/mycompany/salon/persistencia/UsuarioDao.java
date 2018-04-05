@@ -6,6 +6,7 @@
 package com.mycompany.salon.persistencia;
 
 import com.mycompany.salon.modelo.Usuario;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,17 +14,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Named;
 
 /**
  *
  * @author ThigoYure
  * @author AlexaLins
  */
-public class UsuarioDao {
-
-    public UsuarioDao() {
-    }
-
+@Named
+public class UsuarioDao implements Serializable{
+    
     public Usuario cadastroUsuario(Usuario usuario) throws ClassNotFoundException {
         try (Connection con = ConFactory.getConnection()) {
             String sql = "INSERT INTO usuario (email, nome, telefone, fotoPerfil) VALUES (?,?,?,?)";

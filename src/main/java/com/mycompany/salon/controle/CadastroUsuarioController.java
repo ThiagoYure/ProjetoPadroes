@@ -11,7 +11,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  *
  * @author alexalins
  */
-public class CadastroUsuario extends SimpleTagSupport{
+public class CadastroUsuarioController extends SimpleTagSupport{
     
     Usuario usuario = new Usuario();
     
@@ -21,7 +21,7 @@ public class CadastroUsuario extends SimpleTagSupport{
         try {
             getJspContext().setAttribute("UsuarioCadastro", usuarioDao.cadastroUsuario(usuario));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastroUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
