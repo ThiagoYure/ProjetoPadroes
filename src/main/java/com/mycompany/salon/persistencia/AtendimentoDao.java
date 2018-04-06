@@ -5,7 +5,10 @@
  */
 package com.mycompany.salon.persistencia;
 
+import com.mycompany.salon.modelo.Atendente;
 import com.mycompany.salon.modelo.Atendimento;
+import com.mycompany.salon.modelo.AtendimentoBuilder;
+import com.mycompany.salon.modelo.Servico;
 import com.mycompany.salon.modelo.Usuario;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -13,11 +16,13 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -26,15 +31,17 @@ import javax.inject.Named;
  */
 @Named
 public class AtendimentoDao implements Serializable{
+    
 
     public ArrayList<Atendimento> readAgendaByAtendente(String atendente) {
         try (Connection con = ConFactory.getConnection()) {
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE atendente = ? and cliente is null");
             st.setString(1, atendente);
             ResultSet r = st.executeQuery();
+            ArrayList<Atendimento> retorno = new ArrayList<>();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
-            ArrayList<Atendimento> retorno = new ArrayList<>();
+            UsuarioDao usuarioDao = new UsuarioDao();
             while (r.next()) {
                 Atendimento atendimento = new Atendimento();
                 atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
@@ -58,10 +65,10 @@ public class AtendimentoDao implements Serializable{
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE atendente = ?");
             st.setString(1, atendente);
             ResultSet r = st.executeQuery();
+            ArrayList<Atendimento> retorno = new ArrayList<>();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
             UsuarioDao usuarioDao = new UsuarioDao();
-            ArrayList<Atendimento> retorno = new ArrayList<>();
             while (r.next()) {
                 Atendimento atendimento = new Atendimento();
                 atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
@@ -83,22 +90,22 @@ public class AtendimentoDao implements Serializable{
         return null;
     }
 
-    public ArrayList<Atendimento> readByServico(String servico) {
+    public ArrayList<Atendimento> readAgendaByServico(String servico) {
         try (Connection con = ConFactory.getConnection()) {
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE servico = ?");
             st.setString(1, servico);
             ResultSet r = st.executeQuery();
+            ArrayList<Atendimento> retorno = new ArrayList<>();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
             UsuarioDao usuarioDao = new UsuarioDao();
-            ArrayList<Atendimento> retorno = new ArrayList<>();
+            AtendimentoBuilder builder = new AtendimentoBuilder();
             while (r.next()) {
-                Atendimento atendimento = new Atendimento();
-                atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
-                atendimento.setCliente(usuarioDao.readByEmail(r.getString("cliente")));
-                atendimento.setServico(servicoDao.readByNome(r.getString("servico")));
-                atendimento.setConfirmado(r.getBoolean("confirmado"));
-                atendimento.setId(r.getInt("id"));
+                Atendimento atendimento;
+                Atendente atendente = atendenteDao.readByNome(r.getString("atendente"));
+                Servico servicoObj = servicoDao.readByNome(r.getString("servico"));
+                builder.comAtendente(atendente).comId(r.getInt("id")).comServico(servicoObj);
+                atendimento = builder.getAtendimento();
                 retorno.add(atendimento);
             }
             st.close();
@@ -110,25 +117,23 @@ public class AtendimentoDao implements Serializable{
         return null;
     }
 
-    public Atendimento readById(int idAtendimento) {
+    public Atendimento readAgendaById(int idAtendimento) {
         try (Connection con = ConFactory.getConnection()) {
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendimento WHERE id = ?");
             st.setInt(1, idAtendimento);
             ResultSet r = st.executeQuery();
+            ArrayList<Atendimento> retorno = new ArrayList<>();
             AtendenteDao atendenteDao = new AtendenteDao();
             ServicoDao servicoDao = new ServicoDao();
             UsuarioDao usuarioDao = new UsuarioDao();
-            ArrayList<Atendimento> retorno = new ArrayList<>();
+            AtendimentoBuilder builder = new AtendimentoBuilder();
             if (r.next()) {
-                Atendimento atendimento = new Atendimento();
-                atendimento.setAtendente(atendenteDao.readByNome(r.getString("atendente")));
-                atendimento.setCliente(usuarioDao.readByEmail(r.getString("email")));
-                atendimento.setServico(servicoDao.readByNome(r.getString("servico")));
-                atendimento.setConfirmado(r.getBoolean("confirmado"));
-                atendimento.setData(LocalDate.parse(r.getString("data")));
-                atendimento.setId(r.getInt("id"));
-                atendimento.setHoraFim(LocalTime.parse(r.getString("horafim")));
-                atendimento.setHoraInicio(LocalTime.parse(r.getString("horainicio")));
+                Atendimento atendimento;
+                Atendente atendente = atendenteDao.readByNome(r.getString("atendente"));
+                Servico servico = servicoDao.readByNome(r.getString("servico"));
+                int id = r.getInt("id");
+                builder.comAtendente(atendente).comServico(servico).comId(id);
+                atendimento = builder.getAtendimento();
                 return atendimento;
             }
             st.close();
@@ -149,9 +154,9 @@ public class AtendimentoDao implements Serializable{
                 st.setString(1, atendimento.getAtendente().getNome());
                 st.setString(2, atendimento.getServico().getNome());
                 st.setString(3, atendimento.getCliente().getEmail());
-                st.setString(4, atendimento.getData().toString());
-                st.setString(5, atendimento.getHoraInicio().toString());
-                st.setString(6, atendimento.getHoraFim().toString());
+                st.setDate(4, Date.valueOf(atendimento.getData()));
+                st.setTime(5, Time.valueOf(atendimento.getHoraInicio()));
+                st.setTime(6, Time.valueOf(atendimento.getHoraFim()));
                 st.setBoolean(7, atendimento.isConfirmado());
                 retorno = st.executeUpdate();
                 st.close();

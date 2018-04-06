@@ -10,10 +10,14 @@ import com.mycompany.salon.modelo.Usuario;
 import com.mycompany.salon.persistencia.AtendimentoDao;
 import com.mycompany.salon.persistencia.UsuarioDao;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ThigoYure
  */
-public class AgendarAtendimentoController implements Command {
+@Named
+public class AgendarAtendimentoController implements Command, Serializable {
 
     @Inject private AtendimentoDao atendimentoDao;
     @Inject private UsuarioDao userDao;
@@ -29,11 +34,15 @@ public class AgendarAtendimentoController implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) {
         int idAtendimento = Integer.parseInt(req.getParameter("opcao"));
-        Atendimento atendimento = atendimentoDao.readById(idAtendimento);
+        Atendimento atendimento = atendimentoDao.readAgendaById(idAtendimento);
         Usuario user = userDao.readByEmail(req.getParameter("cliente"));
         atendimento.setCliente(user);
         atendimento.setConfirmado(false);
-        atendimento.setData(LocalDate.parse(req.getParameter("data")));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        atendimento.setData(LocalDate.parse(req.getParameter("data"), formatter));
+        LocalTime horaInicio = LocalTime.parse(req.getParameter("horaInicio"));
+        atendimento.setHoraInicio(horaInicio);
+        atendimento.setHoraFim(horaInicio.plusMinutes(atendimento.getServico().getTempoMedio()));
         if (req.getParameter("opcao").equals("") || req.getParameter("cliente").equals("") || req.getParameter("data").equals("")) {
             try {
                 res.sendRedirect(req.getContextPath() + "?msg=Preencha os campos vazios.");

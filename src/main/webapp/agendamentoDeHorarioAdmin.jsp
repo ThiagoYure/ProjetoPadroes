@@ -80,7 +80,6 @@
                                 <input class="with-gap" name="opcao" type="radio" id="${opcoes.id}" value="${opcoes.id}" />
                                 <label for="${opcoes.id}">
                                     <b>Atendente:</b>${opcoes.atendente.nome}</br>
-                                    <b>Horário:</b>${opcoes.horaInicio}
                                 </label>
                             </div>
                         </c:forEach>
@@ -103,6 +102,7 @@
                         </div>
                         <input id="data" type="text" name="data" class="datepicker">
                         <label for="data">Data do Atendimento</label>
+                        <input type="text" class="timepicker" name="horaInicio">
                         <button class="btn" type="submit">Agendar</button>
                     </form> 
                 </c:when>
@@ -116,7 +116,6 @@
                                 <input class="with-gap" name="opcao" type="radio" id="${opcoes.id}" value="${opcoes.id}"/>
                                 <label for="${opcoes.id}">
                                     <b>Serviço:</b>${opcoes.atendente.servico.nome}</br>
-                                    <b>Horário:</b>${opcoes.horaInicio}
                                 </label>
                             </div>
                         </c:forEach>
@@ -146,10 +145,26 @@
         </div>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script type="text/javascript" src="js/initialize.js"/>
         <script type="text/javascript">
             $(document).ready(function () {
-                $('select').material_select();
+                $('.datepicker').pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 15,
+                    monthsFull: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+                    monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo'],
+                    weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                    today: 'Hoje',
+                    clear: 'Limpar',
+                    close: 'Pronto',
+                    labelMonthNext: 'Próximo mês',
+                    labelMonthPrev: 'Mês anterior',
+                    labelMonthSelect: 'Selecione um mês',
+                    labelYearSelect: 'Selecione um ano',
+                    format: 'dd/mm/yyyy'
+                });
+                $('select').material_select({});
+                $('.timepicker').timepicker();
             });
         </script>
     </body>

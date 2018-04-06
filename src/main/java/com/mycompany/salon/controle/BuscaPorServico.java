@@ -26,7 +26,7 @@ public class BuscaPorServico extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException {
         AtendimentoDao atendDao = new AtendimentoDao();
-        getJspContext().setAttribute("AtendimentoPorServico", atendDao.readByServico(servico));
+        getJspContext().setAttribute("AtendimentoPorServico", atendDao.readAgendaByServico(servico));
     }
 
     public void setServico(String servico) {

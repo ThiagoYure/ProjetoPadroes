@@ -16,16 +16,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Named;
 
 /**
  *
  * @author ThigoYure
  * @author AlexaLins
  */
+@Named
 public class AtendenteDao implements Serializable{
-
-    public AtendenteDao() {
-    }
 
     public Atendente cadastroAtendente(Atendente atendente) throws ClassNotFoundException {
         try (Connection con = ConFactory.getConnection()) {
@@ -66,17 +65,16 @@ public class AtendenteDao implements Serializable{
 
     }
 
-    Atendente readByNome(String nome) {
+    public Atendente readByNome(String nome) {
         try (Connection con = ConFactory.getConnection()) {
             PreparedStatement st = con.prepareStatement("SELECT * FROM atendente WHERE nome = ?");
             st.setString(1, nome);
             ResultSet r = st.executeQuery();
-            AtendimentoDao atendimentoDao = new AtendimentoDao();
+            Atendente atendente = new Atendente();
             if (r.next()) {
-                Atendente atendente = new Atendente();
                 atendente.setNome(r.getString("nome"));
-                atendente.setHoraFim(LocalTime.parse(r.getString("horafim")));
-                atendente.setHoraInício(LocalTime.parse(r.getString("horainicio")));
+                atendente.setHoraFim(r.getTime("horafim").toLocalTime());
+                atendente.setHoraInício(r.getTime("horainicio").toLocalTime());
                 st.close();
                 con.close();
                 return atendente;

@@ -6,6 +6,7 @@
 package com.mycompany.salon.controle;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.inject.Any;
@@ -40,8 +41,9 @@ public class FrontController extends HttpServlet {
         String controller = request.getParameter("controller");
         System.out.println(controller);
         Command comando;
-        comando = (Command) CDI.current().select(Class.forName(controller)).get();
+        comando = (Command) CDI.current().select(Class.forName("com.mycompany.salon.controle."+controller),new AnnotationLiteral<Any>(){}).get();
         comando.execute(request, response);
+         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

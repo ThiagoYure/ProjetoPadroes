@@ -20,8 +20,7 @@ $(document).ready(function() {
       labelYearSelect: 'Selecione um ano',
       format: 'dd/mm/yyyy'
     });
-    $('select').material_select();
-    $(".button-collapse").sideNav();
-    $('.modal').modal();
+    $('select').material_select({});
+    $('.timepicker').timepicker();
 });
 
