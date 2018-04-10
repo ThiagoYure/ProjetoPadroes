@@ -22,72 +22,67 @@
         <div class="container">
             <div class="row">
                 <div class="col s12">
-                    <ul class="tabs">
-                        <li class="tab col s6"><a class="active" href="#Gastos">Pesquisar por gastos</a></li>
-                        <li class="tab col s6"><a href="#Frequencia">Pessquisar por frequência</a></li></li>
-                    </ul>
-                </div>
-                <div id="Gastos" class="col s12">
-                    <form action="PesquisaFidelidade.jsp" method="POST">
+                    <form action="PesquisaFidelidade.jsp" method="GET">
                         <div class="input-field col s12">
-                            <select name="intervalo">
-                                <option value="" disabled selected>Choose your option</option>
-                                <option value="1">1 mês</option>
-                                <option value="3">3 meses</option>
-                                <option value="6">6 meses</option>
-                            </select>
-                            <label>Selecione o intervalo</label>
+                            <div class="input-field"><select name="intervalo">
+                                    <option value="" disabled selected>Escolha o período</option>
+                                    <option value="1">1 mês</option>
+                                    <option value="3">3 meses</option>
+                                    <option value="6">6 meses</option>
+                                </select>
+                                <label>Quantos meses atrás?</label></div>
                         </div>
-                        <button class="btn" type="submit">Pesquisar</button>
+                        <input type="submit" class="btn" value="Pesquisar">
                     </form>
-                    <MyTags:BuscaUsuarioByGastos intervalo="${param.intervalo}"/>
-                    <c:choose>
-                        <c:when test="${empty UsuariosGastos}">
-                            Ou não existem usuários cadastrados ainda
-                            ou ainda não foi selecionado um intervalo.
-                        </c:when>
-                        <c:otherwise>
-                            <ul class="collection">
-                                <c:forEach var="Usuarios" items="${UsuariosGastos}">
-                                    <li class="colletion-item">
-                                        Nome do usuario: ${Usuarios.nome}</br>
-                                        Email do usuario: ${Usuarios.email}</br>
-                                    </li>
-                                </c:forEach> 
-                            </ul> 
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div id="Frequencia" class="col s12">
-                    <form action="PesquisaFidelidade.jsp" method="POST">
-                        <div class="input-field col s12">
-                            <select name="intervalo">
-                                <option value="" disabled selected>Choose your option</option>
-                                <option value="1">1 mês</option>
-                                <option value="3">3 meses</option>
-                                <option value="6">6 meses</option>
-                            </select>
-                            <label>Selecione o intervalo</label>
-                        </div>
-                        <button class="btn" type="submit">Pesquisar</button>
-                    </form>
-                    <MyTags:BuscaUsuarioByFrequencia intervalo="${param.intervalo}"/>
-                    <c:choose>
-                        <c:when test="${empty UsuariosFrequencia}">
-                            Ou não existem usuários cadastrados ainda
-                            ou ainda não foi selecionado um intervalo.
-                        </c:when>
-                        <c:otherwise>
-                            <ul class="collection">
-                                <c:forEach var="Usuarios" items="${UsuariosFrequencia}">
-                                    <li class="colletion-item">
-                                        Nome do usuario: ${Usuarios.nome}</br>
-                                        Email do usuario: ${Usuarios.email}</br>
-                                    </li>
-                                </c:forEach> 
-                            </ul> 
-                        </c:otherwise>
-                    </c:choose>
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s6"><a href="#Gastos">Ordenados por gastos</a></li>
+                            <li class="tab col s6"><a href="#Frequencia">Ordenados por frequência</a></li>
+                        </ul>
+                    </div>
+                    <div id="Gastos">
+                        <c:if test="${not empty param.intervalo}">
+                            <MyTags:BuscaUsuarioByGastos intervalo="${param.intervalo}"/>
+                            <c:choose>
+                                <c:when test="${empty UsuariosGastos}">
+                                    Ou não existem usuários cadastrados ainda
+                                    ou ainda não foi selecionado um intervalo.
+                                </c:when>
+                                <c:otherwise>
+                                    <ul class="collection">
+                                        <c:forEach var="Usuarios" items="${UsuariosGastos}">
+                                            <li class="colletion-item">
+                                                Nome do usuario: ${Usuarios.nome}</br>
+                                                Email do usuario: ${Usuarios.email}</br>
+                                                <div class="divider"></div>
+                                            </li>
+                                        </c:forEach> 
+                                    </ul> 
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </div>
+                    <div id="Frequencia">
+                        <c:if test="${not empty param.intervalo}">
+                            <MyTags:BuscaUsuarioByFrenquencia intervalo="${param.intervalo}"/>
+                            <c:choose>
+                                <c:when test="${empty UsuariosFrequencia}">
+                                    Ou não existem usuários cadastrados ainda
+                                    ou ainda não foi selecionado um intervalo.
+                                </c:when>
+                                <c:otherwise>
+                                    <ul class="collection">
+                                        <c:forEach var="Usuarios" items="${UsuariosFrequencia}">
+                                            <li class="colletion-item">
+                                                Nome do usuario: ${Usuarios.nome}</br>
+                                                Email do usuario: ${Usuarios.email}</br>
+                                            </li>
+                                        </c:forEach> 
+                                    </ul> 
+                                </c:otherwise>
+                            </c:choose>         
+                        </c:if>
+                    </div>
                 </div>
             </div>
         </div>

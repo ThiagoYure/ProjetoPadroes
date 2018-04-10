@@ -24,6 +24,28 @@
     <name>BuscaServicos</name>
     <tag-class>com.mycompany.salon.controle.BuscaServicos</tag-class>
     <body-content>scriptless</body-content>
+    <attribute>
+      <name>atendente</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
+  <tag>
+    <name>BuscaAtendimentosPendentes</name>
+    <tag-class>com.mycompany.salon.controle.BuscaAtendimentoPendentes</tag-class>
+    <body-content>scriptless</body-content>
+  </tag>
+  <tag>
+    <name>BuscaServicosAtendente</name>
+    <tag-class>com.mycompany.salon.controle.BuscaServicosAtendente</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <name>atendente</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
   </tag>
   <tag>
     <name>BuscaAtendentes</name>
@@ -40,6 +62,12 @@
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
     </attribute>
+    <attribute>
+      <name>data</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
   </tag>
   <tag>
     <name>BuscaPorAtendente</name>
@@ -47,6 +75,18 @@
     <body-content>scriptless</body-content>
     <attribute>
       <name>atendente</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>data</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>servico</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>

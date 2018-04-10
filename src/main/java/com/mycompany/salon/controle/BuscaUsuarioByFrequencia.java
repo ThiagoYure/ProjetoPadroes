@@ -21,6 +21,7 @@ public class BuscaUsuarioByFrequencia extends SimpleTagSupport {
      * Called by the container to invoke this tag. The implementation of this
      * method is provided by the tag library developer, and handles all tag
      * processing, body iteration, etc.
+     * @throws javax.servlet.jsp.JspException
      */
     @Override
     public void doTag() throws JspException {

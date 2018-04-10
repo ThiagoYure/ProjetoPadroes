@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -33,16 +34,20 @@ public class AgendarAtendimentoController implements Command, Serializable {
     
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) {
-        int idAtendimento = Integer.parseInt(req.getParameter("opcao"));
+        String opcao = req.getParameter("opcao");
+        String[] atributos = opcao.split("&");
+        int idAtendimento = Integer.parseInt(atributos[0]);
         Atendimento atendimento = atendimentoDao.readAgendaById(idAtendimento);
         Usuario user = userDao.readByEmail(req.getParameter("cliente"));
         atendimento.setCliente(user);
         atendimento.setConfirmado(false);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         atendimento.setData(LocalDate.parse(req.getParameter("data"), formatter));
-        LocalTime horaInicio = LocalTime.parse(req.getParameter("horaInicio"));
+        System.out.println(req.getParameter("horaInicio"));
+        LocalTime horaInicio = LocalTime.parse(atributos[1]);
+        LocalTime horaFim = LocalTime.parse(atributos[2]);
         atendimento.setHoraInicio(horaInicio);
-        atendimento.setHoraFim(horaInicio.plusMinutes(atendimento.getServico().getTempoMedio()));
+        atendimento.setHoraFim(horaFim);
         if (req.getParameter("opcao").equals("") || req.getParameter("cliente").equals("") || req.getParameter("data").equals("")) {
             try {
                 res.sendRedirect(req.getContextPath() + "?msg=Preencha os campos vazios.");

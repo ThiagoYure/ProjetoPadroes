@@ -16,6 +16,8 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 public class BuscaPorAtendente extends SimpleTagSupport {
 
     private String atendente;
+    private String data;
+    private String servico;
 
     /**
      * Called by the container to invoke this tag. The implementation of this
@@ -26,11 +28,21 @@ public class BuscaPorAtendente extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException {
         AtendimentoDao atendDao = new AtendimentoDao();
-        getJspContext().setAttribute("AtendimentoPorAtendente", atendDao.readAgendaByAtendente(atendente));
+        getJspContext().setAttribute("AtendimentoPorAtendente", atendDao.readHorariosByAtendente(atendente,data,servico));
     }
 
     public void setAtendente(String atendente) {
         this.atendente = atendente;
     }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setServico(String servico) {
+        this.servico = servico;
+    }
+    
+    
     
 }

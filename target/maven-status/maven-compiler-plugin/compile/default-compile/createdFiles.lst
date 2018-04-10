@@ -1,4 +1,5 @@
 com\mycompany\salon\controle\FrontController.class
+com\mycompany\salon\controle\BuscaServicosAtendente.class
 com\mycompany\salon\modelo\Servico.class
 com\mycompany\salon\persistencia\UsuarioDao.class
 com\mycompany\salon\controle\BuscaPorAtendente.class
